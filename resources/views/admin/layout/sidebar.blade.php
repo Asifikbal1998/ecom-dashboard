@@ -1,10 +1,12 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{route('admin.dashboard')}}" class="brand-link">
-        <img src="{{asset('admin-asset/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
+
+        <img src="{{ asset('admin-asset/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Admin Dashboard</span>
+
     </a>
 
     <!-- Sidebar -->
@@ -12,10 +14,16 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{asset('admin-asset/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+                @if (!Auth::guard('admin')->user()->image)
+                    <img src="{{ asset('admin-asset/dist/img/photos/download.png') }}" class="img-circle elevation-2"
+                        alt="User Image">
+                @else
+                    <img src="{{ asset('admin-asset/dist/img/photos/download.png') }}" class="img-circle elevation-2"
+                        alt="User Image">
+                @endif
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
             </div>
         </div>
 
@@ -38,103 +46,82 @@
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                @if (Session::get('page') == 'dashboard')
+                    @php $active = 'active' @endphp
+                @else
+                    @php $active = '' @endphp
+                @endif
+                <li class="nav-item">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-th"></i>
                         <p>
                             Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open">
+                    @if (Session::get('page') == 'update-password' || Session::get('page') == 'update-details')
+                        @php $active = 'active' @endphp
+                    @else
+                        @php $active = '' @endphp
+                    @endif
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Seetings
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if (Session::get('page') == 'update-password')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link">
+                            <a href="{{ route('update.passwrd') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v1</p>
+                                <p>Update Admin Password</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'update-details')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
                         <li class="nav-item">
-                            <a href="./index2.html" class="nav-link active">
+                            <a href="{{ url('admin/update-details') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v2</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
+                                <p>Updates Admin Details</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                @if (Session::get('page') == 'subadmin')
+                    @php $active =  'active' @endphp
+                @else
+                    @php $active =  '' @endphp
+                @endif
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                    <a href="{{ route('subadmin') }}" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Widgets
-                            <span class="right badge badge-danger">New</span>
+                            Subadmins
                         </p>
                     </a>
                 </li>
+                @if (Session::get('page') == 'cmsPages')
+                    @php $active =  'active' @endphp
+                @else
+                    @php $active =  '' @endphp
+                @endif
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('cmsPages.index') }}" class="nav-link {{ $active }}">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
-                            Layout Options
-                            <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            CMS Page
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation + Sidebar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/boxed.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Boxed</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Fixed Sidebar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Fixed Navbar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/fixed-footer.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Fixed Footer</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Collapsed Sidebar</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
