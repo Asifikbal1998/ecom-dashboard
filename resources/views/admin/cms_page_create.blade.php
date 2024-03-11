@@ -92,13 +92,6 @@
                                         <input name="meta_keywords" type="text" value="{{ old('meta_keywords') }}" class="form-control" id="meta_keywords"
                                             placeholder="Meta Keywords">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Status</label>
-                                        <select name="ststus" id="ststus" class="form-control">
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <!-- /.card-body -->
 

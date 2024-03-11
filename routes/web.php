@@ -61,5 +61,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('subadmin-delete/{id}', [AdminController::class, 'subadminDestry'])->name('subadmin.delete');
         Route::get('subadmin-update/{id}', [AdminController::class, 'subadminShow'])->name('subadmin.show');
         Route::post('subadmin-update/{id}', [AdminController::class, 'subadminEdit'])->name('subadmin.edit');
+        Route::get('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionShow'])->name('subadminpermision.show');
+        Route::post('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionGive'])->name('subadminpermision.give');
+        Route::get('subadmin-role-view/{id}/{subadmin_name}', [AdminController::class, 'subadminPermisionView'])->name('subadminpermision.view');
     });
 });

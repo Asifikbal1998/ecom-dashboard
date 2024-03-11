@@ -66,7 +66,7 @@
                                 <td>{{ $subadmin->name }}</td>
                                 <td>{{ $subadmin->mobile }}</td>
                                 <td>{{ $subadmin->email }}</td>
-                                <td>{{ $subadmin->type }}</td>
+                                <td>{{ ucfirst($subadmin->type) }}</td>
                                 <td>{{ $subadmin->created_at->format('F j, Y, g:i a') }}</td>
                                 <td>
                                     @if ($subadmin->status == 1)
@@ -81,10 +81,15 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('subadmin.show', ['id' => $subadmin->id]) }}"
-                                        class="btn btn-primary ">Edit</a>
-                                    <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $subadmin->id]) }}" */ ?> class="btn btn-danger confirmDelete"
-                                        name="subadmin Page" title="Delete subadmin" record="subadmin"
-                                        recordid="{{ $subadmin->id }}">Delete</a>
+                                        class="nav-icon fas fa-edit"></a>&nbsp;
+                                    <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $subadmin->id]) }}" */ ?>
+                                        class="nav-icon fas fa-trash confirmDelete" name="subadmin Page"
+                                        title="Delete subadmin" record="subadmin" recordid="{{ $subadmin->id }}"></a>&nbsp;
+                                    <a
+                                        href="{{ route('subadminpermision.view', ['id' => $subadmin->id, 'subadmin_name' => $subadmin->name]) }}"><i
+                                            class="nav-icon fas fa-lock" status="Inactive"></i></a>
+                                    {{-- <a href="{{ route('subadminpermision.show', ['id' => $subadmin->id]) }}"><i
+                                            class="nav-icon fas fa-unlock" status="Inactive"></i></a> --}}
                                 </td>
                             </tr>
                         @endforeach

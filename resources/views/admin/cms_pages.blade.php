@@ -24,7 +24,10 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Add New Pages</h3>
-                <a href=" {{ route('cmsPage.create') }} " class="btn btn-primary" style="float: right;">Add New Pages</a>
+                @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
+                    <a href=" {{ route('cmsPage.create') }} " class="btn btn-primary" style="float: right;">Add New
+                        Pages</a>
+                @endif
             </div>
             {{-- show custom error message --}}
             @if (Session::has('error_message'))
@@ -62,22 +65,31 @@
                                 <td>{{ $cmsPage->title }}</td>
                                 <td>{{ $cmsPage->created_at->format('F j, Y, g:i a') }}</td>
                                 <td>
-                                    @if ($cmsPage->ststus == 1)
-                                        <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
-                                            page_id="{{ $cmsPage->id }}" href="javascript:void(0)"><i
-                                                style='color: #3f6ed3;' class="fas fa-toggle-on" status="Active"></i></a>
-                                    @else
-                                        <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
-                                            page_id="{{ $cmsPage->id }}" style="color: gray;" href="javascript:void(0)"><i
-                                                class="fas fa-toggle-off" status="Inactive"></i></a>
+                                    @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
+                                        @if ($cmsPage->ststus == 1)
+                                            <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
+                                                page_id="{{ $cmsPage->id }}" href="javascript:void(0)"><i
+                                                    style='color: #3f6ed3;' class="fas fa-toggle-on"
+                                                    status="Active"></i></a>
+                                        @else
+                                            <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
+                                                page_id="{{ $cmsPage->id }}" style="color: gray;"
+                                                href="javascript:void(0)"><i class="fas fa-toggle-off"
+                                                    status="Inactive"></i></a>
+                                        @endif
                                     @endif
+
                                 </td>
                                 <td>
-                                    <a href="{{ route('cmsPage.show', ['id' => $cmsPage->id]) }}"
-                                        class="btn btn-primary ">Edit</a>
-                                    <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $cmsPage->id]) }}" */ ?> class="btn btn-danger confirmDelete"
-                                        name="Cms Page" title="Delete Cms Page" record="cms-page"
-                                        recordid="{{ $cmsPage->id }}">Delete</a>
+                                    @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
+                                        <a href="{{ route('cmsPage.show', ['id' => $cmsPage->id]) }}"
+                                            class="btn btn-primary ">Edit</a>
+                                    @endif
+                                    @if ($pageModule['full_access'] == 1)
+                                        <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $cmsPage->id]) }}" */ ?>
+                                            class="btn btn-danger confirmDelete" name="Cms Page" title="Delete Cms Page"
+                                            record="cms-page" recordid="{{ $cmsPage->id }}">Delete</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\CmsPage;
 use App\Http\Controllers\Controller;
+use App\Models\SubadminRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CmsPageController extends Controller
@@ -16,7 +18,22 @@ class CmsPageController extends Controller
     {
         Session::put('page', 'cmsPages');
         $cmsPages = CmsPage::all();
-        return view('admin.cms_pages')->with('cmsPages', $cmsPages);
+
+        //set admin/subadmin role/permession for cms page
+        $cmspageModuleCount = SubadminRole::where(['subadmin_id' => Auth::guard('admin')->user()->id, 'module' => 'cms_pages'])->count();
+        $pageModule = array();
+        if (Auth::guard('admin')->user()->type == 'admin') {
+            $pageModule['view_access'] = 1;
+            $pageModule['edit_access'] = 1;
+            $pageModule['full_access'] = 1;
+        } elseif ($cmspageModuleCount == 0) {
+            $message = 'This feature is restricted for you!';
+            return redirect(route('admin.dashboard'))->with('error_meaasge', $message);
+        } else {
+            $pageModule = SubadminRole::where(['subadmin_id' => Auth::guard('admin')->user()->id, 'module' => 'cms_pages'])->first()->toArray();
+        }
+        
+        return view('admin.cms_pages')->with(['cmsPages' => $cmsPages, 'pageModule' => $pageModule]);
     }
 
     /**
@@ -62,7 +79,6 @@ class CmsPageController extends Controller
             $cmsPages->meta_title = $request->meta_title;
             $cmsPages->meta_description = $request->meta_description;
             $cmsPages->mata_keywords = $request->meta_keywords;
-            $cmsPages->ststus = $request->ststus;
             $cmsPages->save();
 
             return redirect('admin/cms-pages')->with('success_message', 'Page Added Successfully');
@@ -115,7 +131,6 @@ class CmsPageController extends Controller
             $cmsPage->meta_title = $request->meta_title;
             $cmsPage->meta_description = $request->meta_description;
             $cmsPage->mata_keywords = $request->meta_keywords;
-            $cmsPage->ststus = $request->ststus;
             $cmsPage->save();
 
             return redirect('admin/cms-pages')->with('success_message', 'Page Details updated Successfully');

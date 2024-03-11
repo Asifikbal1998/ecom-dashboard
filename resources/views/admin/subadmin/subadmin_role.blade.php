@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Updates Subadmin</li>
+                            <li class="breadcrumb-item active">Subadmin Role</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -27,9 +27,14 @@
                     {{-- right column --}}
                     <div class="col-md-12">
                         <!-- general form elements -->
-                        <div class="card card-primary">
+                        <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Updates Subadmin</h3>
+                                @foreach ($names as $name)
+                                    @php $name = $name['name'] @endphp
+                                @endforeach
+                                <h3 class="card-title">Subadmin Name: {{ $name }}</h3>
+                                <a href=" {{ route('subadminpermision.give', $id) }} " class="btn btn-primary"
+                                    style="float: right;">Edit/Give Access</a>
                             </div>
                             <!-- /.card-header -->
                             {{-- show custom error message --}}
@@ -49,6 +54,8 @@
                                     </button>
                                 </div>
                             @endif
+
+
                             {{-- alert message through valitador class --}}
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -59,43 +66,46 @@
                                     </ul>
                                 </div>
                             @endif
-                            <!-- form start -->
-                            <form action="{{ route('subadmin.edit', ['id' => $subadmin->id]) }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
+                            @php
+                                $view_access = '';
+                                $edit_access = '';
+                                $full_access = '';
+                            @endphp
+                            @if (!empty($data))
+                                @foreach ($data as $dat)
+                                    @if ($dat['view_access'] == 1)
+                                        @php  $view_access="checked"  @endphp
+                                    @else
+                                        @php  $view_access=""  @endphp
+                                    @endif
+
+                                    @if ($dat['edit_access'] == 1)
+                                        @php  $edit_access="checked"  @endphp
+                                    @else
+                                        @php  $edit_access=""  @endphp
+                                    @endif
+
+                                    @if ($dat['full_access'] == 1)
+                                        @php  $full_access="checked"  @endphp
+                                    @else
+                                        @php  $full_access=""  @endphp
+                                    @endif
+                                @endforeach
+                            @endif
+                            <form>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="mobile">Email</label>
-                                        <input name="email" type="text" value="{{ $subadmin->email }}"
-                                            class="form-control" id="email" placeholder="Email" readonly
-                                            style="background-color: #666">
+                                        <label for="cms_pages">CMS Pages:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="checkbox" name="cms_pages[view]" value="1" {{ $view_access }}
+                                            onclick="return false" onkeydown="return false;">&nbsp;View Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="cms_pages[edit]" value="1" {{ $edit_access }}
+                                            onclick="return false" onkeydown="return false;">&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="cms_pages[full]" value="1" {{ $full_access }}
+                                            onclick="return false" onkeydown="return false;">&nbsp;Full Access&nbsp;
+                                        &nbsp;
                                     </div>
-                                    <div class="form-group">
-                                        <label for="page_title">Name</label>
-                                        <input class="form-control" name="name" value="{{ $subadmin->name }}"
-                                            id="name" placeholder="Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile</label>
-                                        <input name="mobile" type="text" value="{{ $subadmin->mobile }}"
-                                            class="form-control" id="mobile" placeholder="Mobile">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Password</label>
-                                        <input name="password" cols="30" rows="3" type="password"
-                                            value="{{ $subadmin->password }}" class="form-control" id="password"
-                                            placeholder="password" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">image</label>
-                                        <input name="image" type="file" class="form-control" id="image"
-                                            placeholder="image">
-                                    </div>
-                                </div>
-                                <!-- /.card-body -->
-
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
                         </div>

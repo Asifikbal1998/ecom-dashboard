@@ -95,13 +95,6 @@
                                             value={{ $cmsPage->mata_keywords }} id="meta_keywords"
                                             placeholder="Meta Keywords">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Status</label>
-                                        <select name="ststus" id="ststus" class="form-control">
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <!-- /.card-body -->
 

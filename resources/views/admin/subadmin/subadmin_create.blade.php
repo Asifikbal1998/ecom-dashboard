@@ -25,7 +25,7 @@
             <div class="container-fluid">
                 <div class="row">
                     {{-- right column --}}
-                    <div class="col-md-12">
+                    <div class="col-md-7">
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
@@ -68,37 +68,37 @@
                                         <input class="form-control" name="name" value="{{ old('name') }}"
                                             id="name" placeholder="Name">
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="name">Type</label>
-                                        <input name="type" class="form-control" id="type" cols="30"
+                                        <input name="type" type="text" class="form-control" id="type" cols="30"
                                             rows="5" value="{{ old('type') }}" placeholder="type" />
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="mobile">Mobile</label>
-                                        <input name="mobile" type="text" value="{{ old('mobile') }}"
+                                        <input name="mobile" type="number" value="{{ old('mobile') }}"
                                             class="form-control" id="mobile" placeholder="Mobile">
                                     </div>
                                     <div class="form-group">
                                         <label for="mobile">Email</label>
-                                        <input name="email" type="text" value="{{ old('email') }}"
+                                        <input name="email" type="email" value="{{ old('email') }}"
                                             class="form-control" id="email" placeholder="Email">
                                     </div>
                                     <div class="form-group">
                                         <label for="mobile">Password</label>
-                                        <input name="password" cols="30" rows="3" type="text"
+                                        <input name="password" cols="30" rows="3" type="password"
                                             class="form-control" id="password" placeholder="Password" />
                                     </div>
                                     <div class="form-group">
                                         <label for="mobile">Image</label>
                                         <input type="file" name="image" id="image" class="form-control">
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="mobile">Status</label>
                                         <select name="status" id="status" class="form-control">
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <!-- /.card-body -->
 

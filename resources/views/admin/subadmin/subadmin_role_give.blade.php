@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Updates Subadmin</li>
+                            <li class="breadcrumb-item active">Subadmin Role</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,7 +29,7 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Updates Subadmin</h3>
+                                <h3 class="card-title">Subadmin Name: {{$name}}</h3>
                             </div>
                             <!-- /.card-header -->
                             {{-- show custom error message --}}
@@ -59,43 +59,24 @@
                                     </ul>
                                 </div>
                             @endif
-                            <!-- form start -->
-                            <form action="{{ route('subadmin.edit', ['id' => $subadmin->id]) }}" method="post"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('subadminpermision.give', $id) }}" method="post">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="mobile">Email</label>
-                                        <input name="email" type="text" value="{{ $subadmin->email }}"
-                                            class="form-control" id="email" placeholder="Email" readonly
-                                            style="background-color: #666">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="page_title">Name</label>
-                                        <input class="form-control" name="name" value="{{ $subadmin->name }}"
-                                            id="name" placeholder="Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile</label>
-                                        <input name="mobile" type="text" value="{{ $subadmin->mobile }}"
-                                            class="form-control" id="mobile" placeholder="Mobile">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">Password</label>
-                                        <input name="password" cols="30" rows="3" type="password"
-                                            value="{{ $subadmin->password }}" class="form-control" id="password"
-                                            placeholder="password" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mobile">image</label>
-                                        <input name="image" type="file" class="form-control" id="image"
-                                            placeholder="image">
+                                        <label for="cms_pages">CMS Pages:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="hidden" name="subadmin_id" value="{{ $id }}">
+                                        <input type="checkbox" name="cms_pages[view]" value="1">&nbsp;View Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="cms_pages[edit]" value="1">&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="cms_pages[full]" value="1">&nbsp;Full Access&nbsp;
+                                        &nbsp;
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
                         </div>
