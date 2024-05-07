@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CmsPageController;
-use App\Models\Admin;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 /*
@@ -61,8 +62,33 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('subadmin-delete/{id}', [AdminController::class, 'subadminDestry'])->name('subadmin.delete');
         Route::get('subadmin-update/{id}', [AdminController::class, 'subadminShow'])->name('subadmin.show');
         Route::post('subadmin-update/{id}', [AdminController::class, 'subadminEdit'])->name('subadmin.edit');
-        Route::get('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionShow'])->name('subadminpermision.show');
+        Route::get('subadmin-role-view/{id}', [AdminController::class, 'subadminPermisionView'])->name('subadminpermision.view');
         Route::post('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionGive'])->name('subadminpermision.give');
-        Route::get('subadmin-role-view/{id}/{subadmin_name}', [AdminController::class, 'subadminPermisionView'])->name('subadminpermision.view');
+
+
+        //Categories route
+        Route::get('category', [CategoryController::class, 'categories'])->name('category');
+        Route::get('category-create', [CategoryController::class, 'categoryCreate'])->name('category.create');
+        Route::post('category-store', [CategoryController::class, 'categoryStore'])->name('category.store');
+        Route::get('category-update/{id}', [CategoryController::class, 'categoryShow'])->name('category.show');
+        Route::post('category-update/{id}', [CategoryController::class, 'categoryEdit'])->name('category.edit');
+        Route::post('update-category-status', [CategoryController::class, 'categoriesStatus'])->name('categories.status');
+        Route::get('category-delete/{id}', [CategoryController::class, 'categoryDestry'])->name('category.delete');
+        //delete category image
+        Route::get('category-image-delete/{id}', [CategoryController::class, 'categoryImageDelete'])->name('category.image.delete');
+
+        //Product route
+        Route::get('product', [ProductController::class, 'product'])->name('product.index');
+        Route::get('product-create', [ProductController::class, 'productCreate'])->name('product.create');
+        Route::post('product-store', [ProductController::class, 'productStore'])->name('product.store');
+        Route::get('product-update/{id}', [ProductController::class, 'productShow'])->name('product.show');
+        Route::post('product-update/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
+        Route::post('update-product-status', [ProductController::class, 'productStatus'])->name('product.status');
+        Route::get('product-delete/{id}', [ProductController::class, 'productDestry'])->name('product.delete');
+
+
+        //delete product vodeo
+        Route::get('product-video-delete/{id}', [ProductController::class, 'productVideoDelete'])->name('product.video.delete');
+
     });
 });

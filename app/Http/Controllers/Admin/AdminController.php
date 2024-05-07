@@ -100,13 +100,14 @@ class AdminController extends Controller
             $data = $request->all();
 
             $rule = [
-                'name' => 'required|max:255',
+                'name' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
                 'mobile' => 'required|numeric|digits:10',
                 'image' => 'image',
             ];
 
             $customMessage = [
                 'name.required' => 'Name is required',
+                'name.regex' => 'Valid Name is required',
                 'name.max' => 'Name Maximum charcter less than 355',
                 'mobile.required' => 'Mobile No. is required',
                 'mobile.numeric' => 'Mobile No. only Numeric value Accepcted',
@@ -280,19 +281,13 @@ class AdminController extends Controller
         }
     }
 
-    public function subadminPermisionView($id, $subadmin_name)
+    public function subadminPermisionView($id)
     {
         $data = SubadminRole::where('subadmin_id', $id)->get()->toArray();
-        $names = Admin::where('name', $subadmin_name)->get()->toArray();
+        // dd($data);
+        $name = Admin::select('name')->where('id', $id)->first()->toArray();
 
-        return view('admin.subadmin.subadmin_role')->with(['data' => $data, 'names' => $names, $id, 'id' => $id]);
-    }
-
-    public function subadminPermisionShow($id)
-    {
-        $adminName = Admin::where('id', $id)->get()->toArray();
-        $name = $adminName[0]['name'];
-        return view('admin.subadmin.subadmin_role_give')->with(['id' => $id, 'name' => $name]);
+        return view('admin.subadmin.subadmin_role')->with(['data' => $data, 'name' => $name, $id, 'id' => $id]);
     }
 
     public function subadminPermisionGive($id, Request $request)
@@ -303,7 +298,7 @@ class AdminController extends Controller
             // dd($data);
 
             //delete all earlier roles for subadmin
-            SubadminRole::where('subadmin_id', $request->subadmin_id)->delete();
+            SubadminRole::where('subadmin_id', $id)->delete();
 
             //Add new roles for subadmin dynamically
             foreach ($data as $key => $value) {
@@ -324,22 +319,18 @@ class AdminController extends Controller
                 } else {
                     $full = 0;
                 }
+
+                $role = new SubadminRole();
+                $role->subadmin_id = $id;
+                $role->module = $key;
+                $role->view_access = $view;
+                $role->edit_access = $edit;
+                $role->full_access = $full;
+                $role->save();
             }
 
-            $role = new SubadminRole();
-            $role->subadmin_id = $request->subadmin_id;
-            $role->module = $key;
-            $role->view_access = $view;
-            $role->edit_access = $edit;
-            $role->full_access = $full;
-            $role->save();
-
-            $subadminRoles = SubadminRole::where('subadmin_id', $request->subadmin_id)->get()->toArray();
-            $adminName = Admin::where('id', $request->subadmin_id)->get()->toArray();
-            $name = $adminName[0]['name'];
             $success_message = "Subadmin Role has been Given/Updated";
-            // return back()->with(compact('success_message', 'subadminRoles'));
-            return redirect(route('subadminpermision.view', ['id' => $id, 'subadmin_name' => $name]))->with(compact('success_message', 'subadminRoles'));
+            return redirect(route('subadminpermision.view', ['id' => $id]))->with(compact('success_message'));
         }
     }
 }

@@ -68,11 +68,6 @@
                                         <input class="form-control" name="name" value="{{ old('name') }}"
                                             id="name" placeholder="Name">
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="name">Type</label>
-                                        <input name="type" type="text" class="form-control" id="type" cols="30"
-                                            rows="5" value="{{ old('type') }}" placeholder="type" />
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="mobile">Mobile</label>
                                         <input name="mobile" type="number" value="{{ old('mobile') }}"
@@ -92,13 +87,6 @@
                                         <label for="mobile">Image</label>
                                         <input type="file" name="image" id="image" class="form-control">
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="mobile">Status</label>
-                                        <select name="status" id="status" class="form-control">
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                    </div> --}}
                                 </div>
                                 <!-- /.card-body -->
 

@@ -91,6 +91,8 @@
     <script>
         $(function() {
             $("#cms-table").DataTable();
+            $("#category").DataTable();
+            $("#product").DataTable();
         });
     </script>
     {{-- sweet alert js --}}

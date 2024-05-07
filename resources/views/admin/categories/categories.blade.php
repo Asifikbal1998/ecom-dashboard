@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Update Cms Pages</li>
+                            <li class="breadcrumb-item active">Update New Category</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -23,10 +23,10 @@
         <!-- Main content -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Add New Pages</h3>
-                @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
-                    <a href=" {{ route('cmsPage.create') }} " class="btn btn-primary" style="float: right;">Add New
-                        Pages</a>
+                <h3 class="card-title">Add New Category</h3>
+                @if ($categoriesModule['edit_access'] == 1 || $categoriesModule['full_access'] == 1)
+                    <a href=" {{ route('category.create') }} " class="btn btn-primary" style="float: right;">Add New
+                        Category</a>
                 @endif
             </div>
             {{-- show custom error message --}}
@@ -48,47 +48,57 @@
             @endif
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="cms-table" class="table table-bordered table-striped">
+                <table id="category" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Cms Pages</th>
+                            <th>Category Name</th>
+                            <th>Parent Category</th>
+                            <th>URL</th>
                             <th>Created At</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($cmsPages as $cmsPage)
+                        @foreach ($categories as $category)
                             <tr>
-                                <td>{{ $cmsPage->id }}</td>
-                                <td>{{ $cmsPage->title }}</td>
-                                <td>{{ $cmsPage->created_at->format('F j, Y, g:i a') }}</td>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->categori_name }}</td>
                                 <td>
-                                    @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
-                                        @if ($cmsPage->ststus == 1)
-                                            <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
-                                                page_id="{{ $cmsPage->id }}" href="javascript:void(0)"><i
+                                    @if (isset($category->parentcategory->categori_name))
+                                        {{ $category->parentcategory->categori_name }}
+                                    @endif
+                                </td>
+                                <td>{{ $category->url }}</td>
+                                <td>{{ $category->created_at->format('F j, Y, g:i a') }}</td>
+                                <td>
+                                    {{-- ststus update --}}
+                                    @if ($categoriesModule['edit_access'] == 1 || $categoriesModule['full_access'] == 1)
+                                        @if ($category->status == 1)
+                                            <a class="updateCategoryStatus" id="page-{{ $category->id }}"
+                                                page_id="{{ $category->id }}" href="javascript:void(0)"><i
                                                     style='color: #3f6ed3;' class="fas fa-toggle-on"
                                                     status="Active"></i></a>
                                         @else
-                                            <a class="updateCmsPageStatus" id="page-{{ $cmsPage->id }}"
-                                                page_id="{{ $cmsPage->id }}" style="color: gray;"
+                                            <a class="updateCategoryStatus" id="page-{{ $category->id }}"
+                                                page_id="{{ $category->id }}" style="color: gray;"
                                                 href="javascript:void(0)"><i class="fas fa-toggle-off"
                                                     status="Inactive"></i></a>
-                                        @endif
+                                        @endif &nbsp;&nbsp;
+                                    @endif
+                                    {{-- ststus update end --}}
+
+                                    {{-- edit --}}
+                                    @if ($categoriesModule['edit_access'] == 1 || $categoriesModule['full_access'] == 1)
+                                        <a href="{{ route('category.show', ['id' => $category->id]) }}"
+                                            class="nav-icon fas fa-edit"></a>&nbsp;&nbsp;
                                     @endif
 
-                                </td>
-                                <td>
-                                    @if ($pageModule['edit_access'] == 1 || $pageModule['full_access'] == 1)
-                                        <a href="{{ route('cmsPage.show', ['id' => $cmsPage->id]) }}"
-                                            class="btn btn-primary ">Edit</a>
-                                    @endif
-                                    @if ($pageModule['full_access'] == 1)
-                                        <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $cmsPage->id]) }}" */ ?>
-                                            class="btn btn-danger confirmDelete" name="Cms Page" title="Delete Cms Page"
-                                            record="cms-page" recordid="{{ $cmsPage->id }}">Delete</a>
+                                    {{-- delete     --}}
+                                    @if ($categoriesModule['full_access'] == 1)
+                                        <a href="javascript:void(0)" class="nav-icon fas fa-trash confirmDelete"
+                                            name="category Page" title="Delete category" record="category"
+                                            recordid="{{ $category->id }}"></a>&nbsp;
                                     @endif
                                 </td>
                             </tr>

@@ -112,6 +112,50 @@
                         </p>
                     </a>
                 </li>
+                @if (Session::get('page') == 'category')
+                    @php $active =  'active' @endphp
+                @else
+                    @php $active =  '' @endphp
+                @endif
+
+                <li class="nav-item menu-open">
+                    @if (Session::get('page') == 'category' || Session::get('page') == 'products')
+                        @php $active = 'active' @endphp
+                    @else
+                        @php $active = '' @endphp
+                    @endif
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Catalogues
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Session::get('page') == 'category')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('category') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Category</p>
+                            </a>
+                        </li>
+                        @if (Session::get('page') == 'products')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('product.index') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Products</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

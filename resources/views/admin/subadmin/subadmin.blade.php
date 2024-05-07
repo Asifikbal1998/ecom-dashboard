@@ -55,7 +55,6 @@
                             <th>Email</th>
                             <th>Type</th>
                             <th>Created At</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -69,27 +68,33 @@
                                 <td>{{ ucfirst($subadmin->type) }}</td>
                                 <td>{{ $subadmin->created_at->format('F j, Y, g:i a') }}</td>
                                 <td>
+                                    {{-- subadmin status start --}}
                                     @if ($subadmin->status == 1)
                                         <a class="updateSubAdminStatus" id="page-{{ $subadmin->id }}"
                                             page_id="{{ $subadmin->id }}" href="javascript:void(0)"><i
-                                                style='color: #3f6ed3;' class="fas fa-toggle-on" status="Active"></i></a>
+                                                style='color: #3f6ed3;' class="fas fa-toggle-on" status="Active"></i></a>&nbsp;&nbsp;
                                     @else
                                         <a class="updateSubAdminStatus" id="page-{{ $subadmin->id }}"
                                             page_id="{{ $subadmin->id }}" style="color: gray;" href="javascript:void(0)"><i
-                                                class="fas fa-toggle-off" status="Inactive"></i></a>
+                                                class="fas fa-toggle-off" status="Inactive"></i></a>&nbsp;&nbsp;&nbsp;
                                     @endif
-                                </td>
-                                <td>
+                                    {{-- subadmin status end --}}
+
+                                    {{-- subadmin edit --}}
                                     <a href="{{ route('subadmin.show', ['id' => $subadmin->id]) }}"
                                         class="nav-icon fas fa-edit"></a>&nbsp;
-                                    <a href="javascript:void(0)" <?php /* href="{{ route('cmsPage.delete', ['id' => $subadmin->id]) }}" */ ?>
-                                        class="nav-icon fas fa-trash confirmDelete" name="subadmin Page"
-                                        title="Delete subadmin" record="subadmin" recordid="{{ $subadmin->id }}"></a>&nbsp;
-                                    <a
-                                        href="{{ route('subadminpermision.view', ['id' => $subadmin->id, 'subadmin_name' => $subadmin->name]) }}"><i
-                                            class="nav-icon fas fa-lock" status="Inactive"></i></a>
-                                    {{-- <a href="{{ route('subadminpermision.show', ['id' => $subadmin->id]) }}"><i
-                                            class="nav-icon fas fa-unlock" status="Inactive"></i></a> --}}
+                                    {{-- subadmin edit end --}}
+
+                                    {{-- subadmin delete --}}
+                                    <a href="javascript:void(0)" class="nav-icon fas fa-trash confirmDelete"
+                                        name="subadmin Page" title="Delete subadmin" record="subadmin"
+                                        recordid="{{ $subadmin->id }}"></a>&nbsp;
+                                    {{-- subadmin delete end --}}
+
+                                    {{-- subadmin role start --}}
+                                    <a href="{{ route('subadminpermision.view', ['id' => $subadmin->id]) }}"><i
+                                            class="nav-icon fas fa-unlock" status="Inactive"></i></a>
+                                    {{-- subadmin role end --}}
                                 </td>
                             </tr>
                         @endforeach

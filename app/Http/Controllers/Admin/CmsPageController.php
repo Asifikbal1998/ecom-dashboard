@@ -32,8 +32,11 @@ class CmsPageController extends Controller
         } else {
             $pageModule = SubadminRole::where(['subadmin_id' => Auth::guard('admin')->user()->id, 'module' => 'cms_pages'])->first()->toArray();
         }
-        
-        return view('admin.cms_pages')->with(['cmsPages' => $cmsPages, 'pageModule' => $pageModule]);
+        // echo "<pre>";
+        // print_r($pageModule);die;
+
+
+        return view('admin.cms_page.cms_pages')->with(['cmsPages' => $cmsPages, 'pageModule' => $pageModule]);
     }
 
     /**
@@ -41,7 +44,7 @@ class CmsPageController extends Controller
      */
     public function create()
     {
-        return view('admin.cms_page_create');
+        return view('admin.cms_page.cms_page_create');
     }
 
     /**
@@ -81,7 +84,7 @@ class CmsPageController extends Controller
             $cmsPages->mata_keywords = $request->meta_keywords;
             $cmsPages->save();
 
-            return redirect('admin/cms-pages')->with('success_message', 'Page Added Successfully');
+            return redirect(route('cmsPages.index'))->with('success_message', 'Page Added Successfully');
         }
     }
 
@@ -92,7 +95,7 @@ class CmsPageController extends Controller
     {
         $cmsPage = CmsPage::find($id);
         if (!empty($cmsPage)) {
-            return view('admin.cms_page_update')->with('cmsPage', $cmsPage);
+            return view('admin.cms_page.cms_page_update')->with('cmsPage', $cmsPage);
         }
     }
 
@@ -133,7 +136,7 @@ class CmsPageController extends Controller
             $cmsPage->mata_keywords = $request->meta_keywords;
             $cmsPage->save();
 
-            return redirect('admin/cms-pages')->with('success_message', 'Page Details updated Successfully');
+            return redirect(route('cmsPages.index'))->with('success_message', 'Page Details updated Successfully');
         }
     }
 

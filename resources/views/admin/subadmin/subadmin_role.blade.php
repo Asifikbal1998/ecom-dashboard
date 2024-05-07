@@ -29,12 +29,10 @@
                         <!-- general form elements -->
                         <div class="card">
                             <div class="card-header">
-                                @foreach ($names as $name)
-                                    @php $name = $name['name'] @endphp
+                                @foreach ($name as $nam)
+                                    @php $nam @endphp
                                 @endforeach
-                                <h3 class="card-title">Subadmin Name: {{ $name }}</h3>
-                                <a href=" {{ route('subadminpermision.give', $id) }} " class="btn btn-primary"
-                                    style="float: right;">Edit/Give Access</a>
+                                <h3 class="card-title">Subadmin Name: {{ $nam }}</h3>
                             </div>
                             <!-- /.card-header -->
                             {{-- show custom error message --}}
@@ -66,46 +64,114 @@
                                     </ul>
                                 </div>
                             @endif
-                            @php
-                                $view_access = '';
-                                $edit_access = '';
-                                $full_access = '';
-                            @endphp
-                            @if (!empty($data))
-                                @foreach ($data as $dat)
-                                    @if ($dat['view_access'] == 1)
-                                        @php  $view_access="checked"  @endphp
-                                    @else
-                                        @php  $view_access=""  @endphp
-                                    @endif
+                            <form action="{{ route('subadminpermision.give', $id) }}" method="post">
+                                @csrf
+                                <input type="hidden" name="subadmin_id" value="{{ $id }}">
+                                @if (!empty($data))
+                                    @foreach ($data as $dat)
+                                        @if ($dat['module'] == 'cms_pages')
+                                            @if ($dat['view_access'] == 1)
+                                                @php $viewCMSpPage = "checked" @endphp
+                                            @else
+                                                @php $viewCMSpPage = "" @endphp
+                                            @endif
+                                            @if ($dat['edit_access'] == 1)
+                                                @php $editCMSpPage = "checked" @endphp
+                                            @else
+                                                @php $editCMSpPage = "" @endphp
+                                            @endif
+                                            @if ($dat['full_access'] == 1)
+                                                @php $fullCMSpPage = "checked" @endphp
+                                            @else
+                                                @php $fullCMSpPage = "" @endphp
+                                            @endif
+                                        @endif
 
-                                    @if ($dat['edit_access'] == 1)
-                                        @php  $edit_access="checked"  @endphp
-                                    @else
-                                        @php  $edit_access=""  @endphp
-                                    @endif
+                                        @if ($dat['module'] == 'categories')
+                                            @if ($dat['view_access'] == 1)
+                                                @php $viewCategories = "checked" @endphp
+                                            @else
+                                                @php $viewCategories = "" @endphp
+                                            @endif
+                                            @if ($dat['edit_access'] == 1)
+                                                @php $editCategories = "checked" @endphp
+                                            @else
+                                                @php $editCategories = "" @endphp
+                                            @endif
+                                            @if ($dat['full_access'] == 1)
+                                                @php $fullCategories = "checked" @endphp
+                                            @else
+                                                @php $fullCategories = "" @endphp
+                                            @endif
+                                        @endif
 
-                                    @if ($dat['full_access'] == 1)
-                                        @php  $full_access="checked"  @endphp
-                                    @else
-                                        @php  $full_access=""  @endphp
-                                    @endif
-                                @endforeach
-                            @endif
-                            <form>
+                                        @if ($dat['module'] == 'product')
+                                            @if ($dat['view_access'] == 1)
+                                                @php $viewProduct = "checked" @endphp
+                                            @else
+                                                @php $viewProduct = "" @endphp
+                                            @endif
+                                            @if ($dat['edit_access'] == 1)
+                                                @php $editProduct = "checked" @endphp
+                                            @else
+                                                @php $editProduct = "" @endphp
+                                            @endif
+                                            @if ($dat['full_access'] == 1)
+                                                @php $fullProduct = "checked" @endphp
+                                            @else
+                                                @php $fullProduct = "" @endphp
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="cms_pages">CMS Pages:</label>&nbsp; &nbsp; &nbsp;
-                                        <input type="checkbox" name="cms_pages[view]" value="1" {{ $view_access }}
-                                            onclick="return false" onkeydown="return false;">&nbsp;View Access&nbsp;
+                                        <input type="checkbox" name="cms_pages[view]" value="1"
+                                            @if (isset($viewCMSpPage)) {{ $viewCMSpPage }} @endif>&nbsp;View
+                                        Access&nbsp;
                                         &nbsp;
-                                        <input type="checkbox" name="cms_pages[edit]" value="1" {{ $edit_access }}
-                                            onclick="return false" onkeydown="return false;">&nbsp;View/Edit
+                                        <input type="checkbox" name="cms_pages[edit]" value="1"
+                                            @if (isset($editCMSpPage)) {{ $editCMSpPage }} @endif>&nbsp;View/Edit
                                         Access&nbsp; &nbsp;
-                                        <input type="checkbox" name="cms_pages[full]" value="1" {{ $full_access }}
-                                            onclick="return false" onkeydown="return false;">&nbsp;Full Access&nbsp;
+                                        <input type="checkbox" name="cms_pages[full]" value="1"
+                                            @if (isset($fullCMSpPage)) {{ $fullCMSpPage }} @endif>&nbsp;Full
+                                        Access&nbsp;
                                         &nbsp;
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="categories">Categories:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="checkbox" name="categories[view]" value="1"
+                                            @if (isset($viewCategories)) {{ $viewCategories }} @endif>&nbsp;View
+                                        Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="categories[edit]" value="1"
+                                            @if (isset($editCategories)) {{ $editCategories }} @endif>&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="categories[full]" value="1"
+                                            @if (isset($fullCategories)) {{ $fullCategories }} @endif>&nbsp;Full
+                                        Access&nbsp;
+                                        &nbsp;
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="product">Product:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="checkbox" name="product[view]" value="1"
+                                            @if (isset($viewProduct)) {{ $viewProduct }} @endif>&nbsp;View
+                                        Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="product[edit]" value="1"
+                                            @if (isset($editProduct)) {{ $editProduct }} @endif>&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="product[full]" value="1"
+                                            @if (isset($fullProduct)) {{ $fullProduct }} @endif>&nbsp;Full
+                                        Access&nbsp;
+                                        &nbsp;
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
                         </div>
