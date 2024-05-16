@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\ProductAttribute;
+use App\Models\ProductImage;
 use App\Models\SubadminRole;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
@@ -52,8 +57,13 @@ class ProductController extends Controller
     // Add New Product Form View end
 
     //Add New Product Store
-    public function productStore(Request $request)
+    public function productStore(Request $request, $id = null)
     {
+        // dd($request->all());
+        // die;
+
+        $data = $request->all();
+
 
         if ($request->isMethod('post')) {
 
@@ -65,6 +75,7 @@ class ProductController extends Controller
                 'product_color' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
                 'family_color' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
                 'product_price' => 'required|numeric',
+                // 'product_images' => 'mimes:png,jpg,gif',
             ];
 
             $customMessage = [
@@ -160,6 +171,56 @@ class ProductController extends Controller
             $product->status = 1;
             $product->save();
 
+            // to get the last insert record id from database table
+            if ($id == "") {
+                $product_id = DB::getPdo()->lastInsertId();
+            } else {
+                $product_id = $id;
+            }
+
+            // upload product images
+            if ($request->hasFile('product_images')) {
+                $images = $request->file('product_images');
+                foreach ($images as $key => $image) {
+                    $imageName = time() . '_' . $key . '.' . $image->extension();
+                    $image->move(public_path('catalogues/product_images'), $imageName);
+
+                    // Insert Images to the product_images table
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product_id;
+                    $productImage->image = $imageName;
+                    $productImage->status = 1;
+                    $productImage->save();
+                }
+            }
+
+            //upload product attributess
+            foreach ($data['sku'] as $key => $value) {
+                if (!empty($value)) {
+                    // check Product SKU already is exist
+                    $skuCount = ProductAttribute::where('sku', $value)->count();
+                    if ($skuCount > 0) {
+                        return redirect()->back()->with(['error_message' => 'SKU is already exists']);
+                    }
+                    // check Product size already is exist
+                    $sizeCount = ProductAttribute::where(['product_id' => $product_id, 'size' => $data['size'][$key]])->count();
+                    if ($sizeCount > 0) {
+                        return redirect()->back()->with(['error_message' => 'Size is already exists']);
+                    }
+
+                    $attributes = new ProductAttribute();
+                    $attributes->product_id = $product_id;
+                    $attributes->sku = $value;
+                    $attributes->size = $data['size'][$key];
+                    $attributes->price = $data['price'][$key];
+                    $attributes->stock = $data['stock'][$key];
+                    $attributes->status = 1;
+                    $attributes->save();
+                }
+            }
+
+
+
             return redirect(route('product.index'))->with(['success_message' => 'Category has been Created successfully']);
         } else {
             return redirect(route('product.index'))->with('error_message', 'Database Error');
@@ -172,8 +233,8 @@ class ProductController extends Controller
     {
         $category = new Category();
         $getCategories = $category->getCategoriesWithSubcategories()->toArray();
-        // dd($getCategories);
-        $product = Product::find($id);
+        $product = Product::with(['image', 'attributes'])->find($id);
+        // dd($product);
         //product filter get
         $productFilters = Product::productFilters();
         //get family colr
@@ -187,6 +248,8 @@ class ProductController extends Controller
     //After Product Edit .... Product Store
     public function productEdit($id, Request $request)
     {
+        $data = $request->all();
+        // dd($data);
 
         if ($request->isMethod('post')) {
 
@@ -198,6 +261,7 @@ class ProductController extends Controller
                 'product_color' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
                 'family_color' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
                 'product_price' => 'required|numeric',
+                // 'product_images' => 'nullable|mimes:png,jpg,gif',
             ];
 
             $customMessage = [
@@ -292,7 +356,75 @@ class ProductController extends Controller
             $product->status = 1;
             $product->save();
 
-            return redirect(route('product.index'))->with(['success_message' => 'Category has been Created successfully']);
+            // to get the last insert record id from database table
+            if ($id == "") {
+                $product_id = DB::getPdo()->lastInsertId();
+            } else {
+                $product_id = $id;
+            }
+
+            // upload product images
+            if ($request->hasFile('product_images')) {
+                $images = $request->file('product_images');
+                foreach ($images as $key => $image) {
+                    $imageName = time() . '_' . $key . '.' . $image->extension();
+                    $image->move(public_path('catalogues/product_images'), $imageName);
+
+                    // Insert Images to the product_images table
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product_id;
+                    $productImage->image = $imageName;
+                    $productImage->status = 1;
+                    $productImage->save();
+                }
+            }
+
+            // Sort product image
+            if ($id != "") {
+                if (isset($data['image'])) {
+                    // dd($data);die;
+                    foreach ($data['image'] as $key => $image) {
+                        ProductImage::where(['product_id' => $id, 'image' => $image])->update(['image_sort' => $data['image_sort'][$key]]);
+                    }
+                }
+            }
+
+            //upload product attributess
+            foreach ($data['sku'] as $key => $value) {
+                if (!empty($value)) {
+                    // check Product SKU already is exist
+                    $skuCount = ProductAttribute::where('sku', $value)->count();
+                    if ($skuCount > 0) {
+                        return redirect()->back()->with(['error_message' => 'SKU is already exists']);
+                    }
+                    // check Product size already is exist
+                    $sizeCount = ProductAttribute::where(['product_id' => $id, 'size' => $data['size'][$key]])->count();
+                    if ($sizeCount > 0) {
+                        return redirect()->back()->with(['error_message' => 'Size is already exists']);
+                    }
+
+                    $attributes = new ProductAttribute();
+                    $attributes->product_id = $product_id;
+                    $attributes->sku = $value;
+                    $attributes->size = $data['size'][$key];
+                    $attributes->price = $data['price'][$key];
+                    $attributes->stock = $data['stock'][$key];
+                    $attributes->status = 1;
+                    $attributes->save();
+                }
+            }
+
+
+            // Update product attribute
+            foreach ($data['attributeId'] as $akey => $attribute) {
+                ProductAttribute::where('id', $attribute)->update([
+                    'price' => $data['price'][$akey],
+                    'stock' => $data['stock'][$akey]
+                ]);
+            }
+
+
+            return redirect(route('product.index'))->with(['success_message' => 'Category has been Updated successfully']);
         } else {
             return redirect(route('product.index'))->with('error_message', 'Database Error');
         }
@@ -356,4 +488,65 @@ class ProductController extends Controller
         return redirect()->back()->with('success_message', 'Product Video is deleted Successfully');
     }
     //Product Video Delete end
+
+    // Category Image Delete
+    public function productImageDelete($id)
+    {
+        // Get the product image by ID
+        $productImage = ProductImage::select('image')->where('id', $id)->first();
+
+        // Check if the product image exists
+        if (!$productImage) {
+            return redirect()->back()->with('error_message', 'Product image not found');
+        }
+
+        // Get the image file name
+        $imageName = $productImage->image;
+
+        // Get the path to the product image
+        $imagePath = public_path('catalogues/product_images/' . $imageName);
+
+        // Delete the image file if it exists
+        if ($imageName && file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+
+        // Delete product image from product_image table
+        $productImage->where('id', $id)->delete();
+
+        return redirect()->back()->with('success_message', 'Product image has been deleted successfully');
+    }
+    // Category Image Delete end
+
+    //Delete product attribute start
+    public function productAttributeDelete($id)
+    {
+        $attribute = ProductAttribute::find($id);
+        if (!empty($attribute)) {
+            $attribute->delete();
+            return redirect()->back()->with('success_message', 'Attribute is deleted Successfully');
+        } else {
+            return redirect()->back()->with('error_message', 'This Attribute not exist in Database');
+        }
+    }
+    //Delete product attribute end
+
+    //product attribute status start
+    public function productAttributeStatus(Request $request)
+    {
+        $data = $request->all();
+        // echo "<pre>";
+        // print_r($data);
+        // die;
+        if ($request->ajax()) {
+            if ($data['status'] == 'Active') {
+                $status = 0;
+            } else {
+                $status = 1;
+            }
+            ProductAttribute::where('id', $data['page_id'])->update(['status' => $status]);
+            return response()->json(['status' => $status, 'page_id' => $data['page_id']]);
+        }
+    }
+    //product attribute status end
 }

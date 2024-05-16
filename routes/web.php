@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('cms-page-delete/{id}', [CmsPageController::class, 'destroy'])->name('cmsPage.delete');
         Route::get('cms-page-update/{id}', [CmsPageController::class, 'show'])->name('cmsPage.show');
         Route::post('cms-page-update/{id}', [CmsPageController::class, 'edit'])->name('cmsPage.edit');
+        //cms pages route end
 
         //subadmin
         Route::get('subadmin', [AdminController::class, 'subadminIndex'])->name('subadmin');
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('subadmin-update/{id}', [AdminController::class, 'subadminEdit'])->name('subadmin.edit');
         Route::get('subadmin-role-view/{id}', [AdminController::class, 'subadminPermisionView'])->name('subadminpermision.view');
         Route::post('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionGive'])->name('subadminpermision.give');
+        //subadmin end
 
 
         //Categories route
@@ -76,6 +78,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('category-delete/{id}', [CategoryController::class, 'categoryDestry'])->name('category.delete');
         //delete category image
         Route::get('category-image-delete/{id}', [CategoryController::class, 'categoryImageDelete'])->name('category.image.delete');
+        //Categories route end
 
         //Product route
         Route::get('product', [ProductController::class, 'product'])->name('product.index');
@@ -85,10 +88,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('product-update/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
         Route::post('update-product-status', [ProductController::class, 'productStatus'])->name('product.status');
         Route::get('product-delete/{id}', [ProductController::class, 'productDestry'])->name('product.delete');
-
-
         //delete product vodeo
         Route::get('product-video-delete/{id}', [ProductController::class, 'productVideoDelete'])->name('product.video.delete');
-
+        //delete product image
+        Route::get('product-image-delete/{id}', [ProductController::class, 'productImageDelete'])->name('product.image.delete');
+        //delete product attrubute
+        Route::get('product-attribute-delete/{id}', [ProductController::class, 'productAttributeDelete'])->name('product.attribute.delete');
+        //update product attribute status
+        Route::post('update-product-attribute-status', [ProductController::class, 'productAttributeStatus'])->name('product.attribute.status');
+        //Product route end
     });
 });

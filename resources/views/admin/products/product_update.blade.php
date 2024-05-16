@@ -147,6 +147,100 @@
                                             placeholder="Product Weight">
                                     </div>
                                     <div class="form-group">
+                                        <label for="product_image">Product Image</label>
+                                        <input class="form-control" type="file" name="product_images[]"
+                                            id="product_images" accept="image/*" multiple placeholder="Product Image">
+                                    </div>
+                                    @foreach ($product['image'] as $image)
+                                        <a target="_blank"
+                                            href="{{ url('catalogues/product_images/' . $image['image']) }}"><img
+                                                class="mb-4 mt-2" style="margin-left: 10px;" width="60px"
+                                                height="60px"
+                                                src="{{ asset('catalogues/product_images/' . $image['image']) }}"
+                                                alt=""></a>
+                                        <input type="hidden" name="image[]" value="{{ $image['image'] }}">
+                                        <input style="width: 60px;" type="text" name="image_sort[]"
+                                            value="{{ $image['image_sort'] }}" placeholder="Sort">
+                                        {{-- delete  image   --}}
+                                        <a href="javascript:void(0)"
+                                            style="color: #fff; margin-left:10px; margin-left:10px;"
+                                            class="nav-icon fas fa-trash confirmDelete" name="product Image"
+                                            title="Delete product Image" record="product-image"
+                                            recordid="{{ $image['id'] }}"></a>
+                                    @endforeach
+                                    <div class="form-group">
+                                        <label>Added Attributes</label>
+                                        <table style="background-color: #5c5c57; width: 50%;" cellpadding="5">
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Size</th>
+                                                <th>SKU</th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            @foreach ($product['attributes'] as $attribute)
+                                                <input type="hidden" name="attributeId[]"
+                                                    value="{{ $attribute['id'] }}">
+                                                <tr>
+                                                    <td>{{ $attribute['id'] }}</td>
+                                                    <td>{{ $attribute['size'] }}</td>
+                                                    <td>{{ $attribute['sku'] }}</td>
+                                                    <td>
+                                                        <input style="width: 100px;" type="number" name="price[]"
+                                                            value="{{ $attribute['price'] }}">
+                                                    </td>
+                                                    <td>
+                                                        <input style="width: 100px;" type="number" name="stock[]"
+                                                            value="{{ $attribute['stock'] }}">
+                                                    </td>
+                                                    <td>
+                                                        {{-- ststus update --}}
+                                                        @if ($attribute['status'] == 1)
+                                                            <a class="updateProductAttributeStatus"
+                                                                id="page-{{ $attribute['id'] }}"
+                                                                page_id="{{ $attribute['id'] }}"
+                                                                href="javascript:void(0)"><i style='color: #3f6ed3;'
+                                                                    class="fas fa-toggle-on" status="Active"></i></a>&nbsp;&nbsp;
+                                                        @else
+                                                            <a class="updateProductAttributeStatus"
+                                                                id="page-{{ $attribute['id'] }}"
+                                                                page_id="{{ $attribute['id'] }}" style="color: gray;"
+                                                                href="javascript:void(0)"><i class="fas fa-toggle-off"
+                                                                    status="Inactive"></i></a> &nbsp;&nbsp;
+                                                        @endif
+                                                        {{-- ststus update end --}}
+
+                                                        {{-- delete     --}}
+                                                        <a href="javascript:void(0)"
+                                                            class="nav-icon fas fa-trash confirmDelete"
+                                                            name="category Page" title="Delete attribute"
+                                                            record="product-attribute"
+                                                            recordid="{{ $attribute['id'] }}"></a>&nbsp;
+
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Add Attributes</label>
+                                        <div class="field_wrapper">
+                                            <div>
+                                                <input type="text" name="size[]" id="size[]" placeholder="Size"
+                                                    style="width: 150px;" />&nbsp;
+                                                <input type="text" name="sku[]" id="sku[]" placeholder="Sku"
+                                                    style="width: 150px;" />&nbsp;
+                                                <input type="text" name="price[]" id="price[]" placeholder="Price"
+                                                    style="width: 150px;" />&nbsp;
+                                                <input type="text" name="stock[]" id="stock[]" placeholder="Stock"
+                                                    style="width: 150px;" />
+                                                <a href="javascript:void(0);" class="add_button" title="Add field">
+                                                    Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="product_video">Product Video</label>
                                         <input class="form-control" type="file" name="product_video"
                                             id="product_video" accept="video/" placeholder="Product Video">
@@ -193,7 +287,8 @@
                                         <select name="fabric" id="fabric" class="form-control">
                                             <option value="">Select</option>
                                             @foreach ($productFilters['fabricArray'] as $fabric)
-                                                <option @if ($product->fabric == $fabric) selected @endif value="{{ $fabric }}">{{ $fabric }}</option>
+                                                <option @if ($product->fabric == $fabric) selected @endif
+                                                    value="{{ $fabric }}">{{ $fabric }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -202,7 +297,8 @@
                                         <select name="fit" id="fit" class="form-control">
                                             <option value="">Select</option>
                                             @foreach ($productFilters['fitArray'] as $fit)
-                                                <option @if ($product->fit == $fit) selected @endif value="{{ $fit }}">{{ $fit }}</option>
+                                                <option @if ($product->fit == $fit) selected @endif
+                                                    value="{{ $fit }}">{{ $fit }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -211,7 +307,8 @@
                                         <select name="occasion" id="occasion" class="form-control">
                                             <option value="">Select</option>
                                             @foreach ($productFilters['occasionArray'] as $occasion)
-                                                <option @if ($product->occassion == $occasion) selected @endif value="{{ $occasion }}">{{ $occasion }}</option>
+                                                <option @if ($product->occassion == $occasion) selected @endif
+                                                    value="{{ $occasion }}">{{ $occasion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -220,7 +317,8 @@
                                         <select name="sleeve" id="sleeve" class="form-control">
                                             <option value="">Select</option>
                                             @foreach ($productFilters['sleeveArray'] as $sleeve)
-                                                <option @if ($product->sleeve == $sleeve) selected @endif value="{{ $sleeve }}">{{ $sleeve }}</option>
+                                                <option @if ($product->sleeve == $sleeve) selected @endif
+                                                    value="{{ $sleeve }}">{{ $sleeve }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -229,7 +327,8 @@
                                         <select name="pattern" id="pattern" class="form-control">
                                             <option value="">Select</option>
                                             @foreach ($productFilters['patternArray'] as $pattern)
-                                                <option @if ($product->pattern == $pattern) selected @endif value="{{ $pattern }}">{{ $pattern }}</option>
+                                                <option @if ($product->pattern == $pattern) selected @endif
+                                                    value="{{ $pattern }}">{{ $pattern }}</option>
                                             @endforeach
                                         </select>
                                     </div>

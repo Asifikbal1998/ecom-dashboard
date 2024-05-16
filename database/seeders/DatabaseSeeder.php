@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(CategoryTableSeeder::class);
         // $this->call(ProductsTableSeeder::class);
         //$this->call(colorsTableSeeder::class);
-        $this->call(ProductImagesTableSeeder::class);
+        // $this->call(ProductImagesTableSeeder::class);
+        $this->call(ProductAttributeTableSeeder::class);
     }
 }

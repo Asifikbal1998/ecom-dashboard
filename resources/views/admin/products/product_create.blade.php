@@ -143,7 +143,24 @@
                                             placeholder="Product Weight">
                                     </div>
                                     <div class="form-group">
-                                        <label for="product_video">Product Video</label>
+                                        <label for="product_image">Product Image</label>
+                                        <input class="form-control" type="file" name="product_images[]"
+                                            id="product_images" accept="image/*" multiple placeholder="Product Image">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Product Attributes</label>
+                                        <div class="field_wrapper">
+                                            <div>
+                                                <input type="text" value="{{ old('size[]') }}" name="size[]" id="size[]" placeholder="Size" style="width: 150px;"/>&nbsp;
+                                                <input type="text" value="{{ old('sku[]') }}" name="sku[]" id="sku[]" placeholder="Sku" style="width: 150px;"/>&nbsp;
+                                                <input type="number" value="{{ old('price[]') }}" name="price[]" id="price[]" placeholder="Price" style="width: 150px;"/>&nbsp;
+                                                <input type="number" value="{{ old('stock[]') }}" name="stock[]" id="stock[]" placeholder="Stock" style="width: 150px;"/>
+                                                <a href="javascript:void(0);" class="add_button" title="Add field"> Add</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product_video">Product Video (Recomended size Less than 2mb)</label>
                                         <input class="form-control" type="file" name="product_video"
                                             value="{{ old('product_video') }}" id="product_video" accept="video/*"
                                             placeholder="Product Video">

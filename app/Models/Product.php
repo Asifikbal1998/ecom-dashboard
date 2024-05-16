@@ -25,4 +25,12 @@ class Product extends Model
         $productFilters['occasionArray'] = array('Casual', 'Formal');
         return $productFilters;
     }
+
+    public function image() {
+        return $this->hasMany('App\Models\ProductImage');
+    }
+
+    public function attributes() {
+        return $this->hasMany('App\Models\ProductAttribute');
+    }
 }
