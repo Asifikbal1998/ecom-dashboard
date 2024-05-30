@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Update Details</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -115,15 +115,22 @@
                                         <input name="mobile" type="text" class="form-control" id="mobile"
                                             placeholder="Mobile No" value="{{ Auth::guard('admin')->user()->mobile }}">
                                     </div>
-                                    {{-- <div class="form-group">
+                                    <div class="form-group">
                                         <label for="image">Image</label>
                                         <input name="image" type="file" class="form-control" id="image">
-                                    </div> --}}
+                                    </div>
+                                    @if (isset(Auth::guard('admin')->user()->image))
+                                        <td><a target="_blank"
+                                                href="{{ url('subadmin') }}/{{ Auth::guard('admin')->user()->image }}"><img
+                                                    class="rounded-circle" width="150px" height="150px"
+                                                    src="{{ asset('subadmin') }}/{{ Auth::guard('admin')->user()->image }}">
+                                            </a></td>
+                                    @endif
                                 </div>
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
                         </div>

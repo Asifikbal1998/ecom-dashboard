@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CmsPageController;
 use App\Http\Controllers\Admin\ProductController;
@@ -65,6 +67,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('subadmin-update/{id}', [AdminController::class, 'subadminEdit'])->name('subadmin.edit');
         Route::get('subadmin-role-view/{id}', [AdminController::class, 'subadminPermisionView'])->name('subadminpermision.view');
         Route::post('subadmin-role-update/{id}', [AdminController::class, 'subadminPermisionGive'])->name('subadminpermision.give');
+        //delete brand image
+        Route::get('subadmin-image-delete/{id}', [AdminController::class, 'subadminImageDelete'])->name('subadmin.image.delete');
         //subadmin end
 
 
@@ -97,5 +101,33 @@ Route::group(['prefix' => 'admin'], function () {
         //update product attribute status
         Route::post('update-product-attribute-status', [ProductController::class, 'productAttributeStatus'])->name('product.attribute.status');
         //Product route end
+
+
+        //Brand Route Start
+        Route::get('brand', [BrandController::class, 'brand'])->name('brand.index');
+        Route::get('brand-create', [BrandController::class, 'brandCreate'])->name('brand.create');
+        Route::post('brand-store', [BrandController::class, 'brandStore'])->name('brand.store');
+        Route::get('brand-update/{id}', [BrandController::class, 'brandShow'])->name('brand.show');
+        Route::post('brand-update/{id}', [BrandController::class, 'brandEdit'])->name('brand.edit');
+        Route::get('brand-delete/{id}', [BrandController::class, 'brandDestry'])->name('brand.delete');
+        Route::post('update-barnd-status', [BrandController::class, 'brandStatus'])->name('brand.status');
+        //delete brand image
+        Route::get('brand-image-delete/{id}', [BrandController::class, 'brandImageDelete'])->name('brand.image.delete');
+        //delete brand logo
+        Route::get('brand-logo-delete/{id}', [BrandController::class, 'brandLogoDelete'])->name('brand.logo.delete');
+        //Brand Route end
+
+        //Banners route start
+        Route::get('banner', [BannerController::class, 'banners'])->name('banner.index');
+        Route::get('banner-create', [BannerController::class, 'bannerCreate'])->name('banner.create');
+        Route::post('banner-store', [BannerController::class, 'bannerStore'])->name('banner.store');
+        Route::get('banner-update/{id}', [BannerController::class, 'bannerShow'])->name('banner.show');
+        Route::post('banner-update/{id}', [BannerController::class, 'bannerEdit'])->name('banner.edit');
+        Route::get('banner-delete/{id}', [BannerController::class, 'bannerDestry'])->name('banner.delete');
+        Route::post('update-banner-status', [BannerController::class, 'bannerStatus'])->name('banner.status');
+
+        //delete banner image
+        Route::get('banner-image-delete/{id}', [BannerController::class, 'bannerImageDelete'])->name('banner.image.delete');
+        //Banners route end
     });
 });

@@ -13,15 +13,15 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 @if (!Auth::guard('admin')->user()->image)
-                    <img src="{{ asset('admin-asset/dist/img/photos/download.png') }}" class="img-circle elevation-2"
-                        alt="User Image">
+                    <img src="{{ asset('admin-asset/dist/img/photos/subadmin/download.png') }}"
+                        class="img-circle elevation-2" alt="User Image">
                 @else
-                    <img src="{{ asset('admin-asset/dist/img/photos/download.png') }}" class="img-circle elevation-2"
-                        alt="User Image">
+                    <img src="{{ asset('subadmin') }}/{{ Auth::guard('admin')->user()->image }}"
+                        class="img-circle elevation-2" alt="User Image">
                 @endif
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
+                <a class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
             </div>
         </div>
 
@@ -29,8 +29,6 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
                 @if (Session::get('page') == 'dashboard')
                     @php $active = 'active' @endphp
                 @else
@@ -44,17 +42,22 @@
                         </p>
                     </a>
                 </li>
+
+
+                {{-- Admin Management start --}}
                 @if (Auth::guard('admin')->user()->type == 'admin')
                     <li class="nav-item menu-open">
-                        @if (Session::get('page') == 'update-password' || Session::get('page') == 'update-details')
+                        @if (Session::get('page') == 'update-password' ||
+                                Session::get('page') == 'update-details' ||
+                                Session::get('page') == 'subadmin')
                             @php $active = 'active' @endphp
                         @else
                             @php $active = '' @endphp
                         @endif
                         <a href="#" class="nav-link {{ $active }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Seetings
+                                Admin Management
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -81,45 +84,64 @@
                                     <p>Updates Admin Details</p>
                                 </a>
                             </li>
+                            @if (Session::get('page') == 'subadmin')
+                                @php $active =  'active' @endphp
+                            @else
+                                @php $active =  '' @endphp
+                            @endif
+                            <li class="nav-item">
+                                <a href="{{ route('subadmin') }}" class="nav-link {{ $active }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Subadmins
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif
-                @if (Session::get('page') == 'subadmin')
-                    @php $active =  'active' @endphp
-                @else
-                    @php $active =  '' @endphp
-                @endif
+                {{-- Admin Management end --}}
+
+
+                {{-- Pages Management start --}}
                 @if (Auth::guard('admin')->user()->type == 'admin')
-                    <li class="nav-item">
-                        <a href="{{ route('subadmin') }}" class="nav-link {{ $active }}">
-                            <i class="nav-icon fas fa-users"></i>
+                    <li class="nav-item menu-open">
+                        @if (Session::get('page') == 'cmsPages')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
+                        <a href="#" class="nav-link {{ $active }}">
+                            <i class="nav-icon fas fa-copy"></i>
                             <p>
-                                Subadmins
+                                Pages Management
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            @if (Session::get('page') == 'cmsPages')
+                                @php $active =  'active' @endphp
+                            @else
+                                @php $active =  '' @endphp
+                            @endif
+                            <li class="nav-item">
+                                <a href="{{ route('cmsPages.index') }}" class="nav-link {{ $active }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        CMS Page
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
-                @if (Session::get('page') == 'cmsPages')
-                    @php $active =  'active' @endphp
-                @else
-                    @php $active =  '' @endphp
-                @endif
-                <li class="nav-item">
-                    <a href="{{ route('cmsPages.index') }}" class="nav-link {{ $active }}">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            CMS Page
-                        </p>
-                    </a>
-                </li>
-                @if (Session::get('page') == 'category')
-                    @php $active =  'active' @endphp
-                @else
-                    @php $active =  '' @endphp
-                @endif
+                {{-- Pages Management end --}}
 
+
+
+                {{-- Catalogues Management start --}}
                 <li class="nav-item menu-open">
-                    @if (Session::get('page') == 'category' || Session::get('page') == 'products')
+                    @if (Session::get('page') == 'category' || Session::get('page') == 'products' || Session::get('page') == 'brand')
                         @php $active = 'active' @endphp
                     @else
                         @php $active = '' @endphp
@@ -127,7 +149,7 @@
                     <a href="#" class="nav-link {{ $active }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
-                            Catalogues
+                            Catalogues Manage
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -143,6 +165,17 @@
                                 <p>Category</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'brand')
+                            @php $active = 'active' @endphp
+                        @else
+                            @php $active = '' @endphp
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('brand.index') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Brands</p>
+                            </a>
+                        </li>
                         @if (Session::get('page') == 'products')
                             @php $active = 'active' @endphp
                         @else
@@ -156,6 +189,40 @@
                         </li>
                     </ul>
                 </li>
+                {{-- Catalogues Management end --}}
+
+
+                {{-- Banners management start --}}
+                <li class="nav-item menu-open">
+                    @if (Session::get('page') == 'banners')
+                        @php $active = 'active' @endphp
+                    @else
+                        @php $active = '' @endphp
+                    @endif
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-image"></i>
+                        <p>
+                            Banners Manage
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Session::get('page') == 'banners')
+                            @php $active =  'active' @endphp
+                        @else
+                            @php $active =  '' @endphp
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('banner.index') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Banners
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

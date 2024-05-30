@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Subadmin Role</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -122,6 +122,42 @@
                                                 @php $fullProduct = "" @endphp
                                             @endif
                                         @endif
+
+                                        @if ($dat['module'] == 'brands')
+                                            @if ($dat['view_access'] == 1)
+                                                @php $viewBrand = "checked" @endphp
+                                            @else
+                                                @php $viewBrand = "" @endphp
+                                            @endif
+                                            @if ($dat['edit_access'] == 1)
+                                                @php $editBrand = "checked" @endphp
+                                            @else
+                                                @php $editBrand = "" @endphp
+                                            @endif
+                                            @if ($dat['full_access'] == 1)
+                                                @php $fullBrand = "checked" @endphp
+                                            @else
+                                                @php $fullBrand = "" @endphp
+                                            @endif
+                                        @endif
+
+                                        @if ($dat['module'] == 'banners')
+                                            @if ($dat['view_access'] == 1)
+                                                @php $viewBanner = "checked" @endphp
+                                            @else
+                                                @php $viewBanner = "" @endphp
+                                            @endif
+                                            @if ($dat['edit_access'] == 1)
+                                                @php $editBanner = "checked" @endphp
+                                            @else
+                                                @php $editBanner = "" @endphp
+                                            @endif
+                                            @if ($dat['full_access'] == 1)
+                                                @php $fullBanner = "checked" @endphp
+                                            @else
+                                                @php $fullBanner = "" @endphp
+                                            @endif
+                                        @endif
                                     @endforeach
                                 @endif
                                 <div class="card-body">
@@ -166,6 +202,36 @@
                                         Access&nbsp; &nbsp;
                                         <input type="checkbox" name="product[full]" value="1"
                                             @if (isset($fullProduct)) {{ $fullProduct }} @endif>&nbsp;Full
+                                        Access&nbsp;
+                                        &nbsp;
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="brand">Brand:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="checkbox" name="brands[view]" value="1"
+                                            @if (isset($viewBrand)) {{ $viewBrand }} @endif>&nbsp;View
+                                        Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="brands[edit]" value="1"
+                                            @if (isset($editBrand)) {{ $editBrand }} @endif>&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="brands[full]" value="1"
+                                            @if (isset($fullBrand)) {{ $fullBrand }} @endif>&nbsp;Full
+                                        Access&nbsp;
+                                        &nbsp;
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="banners">Banners:</label>&nbsp; &nbsp; &nbsp;
+                                        <input type="checkbox" name="banners[view]" value="1"
+                                            @if (isset($viewBanner)) {{ $viewBanner }} @endif>&nbsp;View
+                                        Access&nbsp;
+                                        &nbsp;
+                                        <input type="checkbox" name="banners[edit]" value="1"
+                                            @if (isset($editBanner)) {{ $editBanner }} @endif>&nbsp;View/Edit
+                                        Access&nbsp; &nbsp;
+                                        <input type="checkbox" name="banners[full]" value="1"
+                                            @if (isset($fullBanner)) {{ $fullBanner }} @endif>&nbsp;Full
                                         Access&nbsp;
                                         &nbsp;
                                     </div>

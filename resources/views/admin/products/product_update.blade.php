@@ -7,11 +7,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Product Update</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item active">Update Product</li>
                         </ol>
                     </div><!-- /.col -->
@@ -91,6 +91,17 @@
                                                         @endif
                                                     @endforeach
                                                 @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brand_id">Select Brand*</label>
+                                        <select class="form-control" name="brand_id" id="brand_id">
+                                            <option>Select Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option @if ($brand['id'] == $product->brand_id) selected @endif
+                                                    value="{{ $brand['id'] }}">{{ $brand['brand_name'] }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -201,7 +212,8 @@
                                                                 id="page-{{ $attribute['id'] }}"
                                                                 page_id="{{ $attribute['id'] }}"
                                                                 href="javascript:void(0)"><i style='color: #3f6ed3;'
-                                                                    class="fas fa-toggle-on" status="Active"></i></a>&nbsp;&nbsp;
+                                                                    class="fas fa-toggle-on"
+                                                                    status="Active"></i></a>&nbsp;&nbsp;
                                                         @else
                                                             <a class="updateProductAttributeStatus"
                                                                 id="page-{{ $attribute['id'] }}"

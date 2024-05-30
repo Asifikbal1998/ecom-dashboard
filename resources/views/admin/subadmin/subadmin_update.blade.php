@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Update Subadmin</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Updates Subadmin</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Update Subadmin</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,7 +29,7 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Updates Subadmin</h3>
+                                <h3 class="card-title">Update Subadmin</h3>
                             </div>
                             <!-- /.card-header -->
                             {{-- show custom error message --}}
@@ -91,6 +91,17 @@
                                         <input name="image" type="file" class="form-control" id="image"
                                             placeholder="image">
                                     </div>
+                                    @if (isset($subadmin->image))
+                                        <td><a target="_blank" href="{{ url('subadmin') }}/{{ $subadmin->image }}"><img
+                                                    class="rounded-circle" width="150px" height="150px"
+                                                    src="{{ asset('subadmin') }}/{{ $subadmin->image }}">
+                                            </a></td>
+                                        {{-- delete     --}}
+                                        <a href="javascript:void(0)" style="color: #fff; margin-left:20px;"
+                                            class="nav-icon fas fa-trash confirmDelete" name="subadmin Image"
+                                            title="Delete category Image" record="subadmin-image"
+                                            recordid="{{ $subadmin['id'] }}"></a>
+                                    @endif
                                 </div>
                                 <!-- /.card-body -->
 

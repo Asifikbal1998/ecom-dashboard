@@ -9,4 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
     use HasFactory;
+    protected $fillable = [
+        // Add other fillable fields here if any
+        'image',
+    ];
 }

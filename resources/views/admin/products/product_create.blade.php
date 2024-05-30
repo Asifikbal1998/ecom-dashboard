@@ -7,11 +7,11 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Add Product</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item active">Create new Product</li>
                         </ol>
                     </div><!-- /.col -->
@@ -89,6 +89,15 @@
                                                         @endif
                                                     @endforeach
                                                 @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brand_id">Select Brand*</label>
+                                        <select class="form-control" name="brand_id" id="brand_id">
+                                            <option>Select Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand['id'] }}">{{ $brand['brand_name'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>

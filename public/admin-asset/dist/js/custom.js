@@ -140,6 +140,54 @@ $(document).ready(function () {
         })
     });
 
+    //Update brand status
+    $('.updateBrandStatus').click(function () {
+        let status = $(this).children("i").attr("status");
+        let page_id = $(this).attr("page_id");
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'post',
+            url: '/admin/update-barnd-status',
+            data: { status: status, page_id: page_id },
+            success: function (resp) {
+                if (resp['status'] == 0) {
+                    $('#page-' + page_id).html("<i class='fas fa-toggle-off' style='color: gray;' status='Inactive'></i>")
+                } else if (resp['status'] == 1) {
+                    $('#page-' + page_id).html("<i class='fas fa-toggle-on' style='color: #3f6ed3;' status='Active'></i>")
+                }
+            }, error: function () {
+                alert('error');
+            }
+        })
+    });
+
+
+
+    //Update banner status
+    $('.updateBannerStatus').click(function () {
+        let status = $(this).children("i").attr("status");
+        let page_id = $(this).attr("page_id");
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'post',
+            url: '/admin/update-banner-status',
+            data: { status: status, page_id: page_id },
+            success: function (resp) {
+                if (resp['status'] == 0) {
+                    $('#page-' + page_id).html("<i class='fas fa-toggle-off' style='color: gray;' status='Inactive'></i>")
+                } else if (resp['status'] == 1) {
+                    $('#page-' + page_id).html("<i class='fas fa-toggle-on' style='color: #3f6ed3;' status='Active'></i>")
+                }
+            }, error: function () {
+                alert('error');
+            }
+        })
+    });
+
 
     // sweet alert for delete cms page
     $('.confirmDelete').click(function () {

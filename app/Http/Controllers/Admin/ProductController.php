@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Color;
@@ -52,7 +53,10 @@ class ProductController extends Controller
         $productFilters = Product::productFilters();
         //get family colr
         $familyColors = Color::all()->where('status', 1);
-        return view('admin.products.product_create')->with(compact('productFilters', 'getCategories', 'familyColors'));
+        // get all brands
+        $brands = Brand::where('status', 1)->get()->toArray();
+        // dd($brands);
+        return view('admin.products.product_create')->with(compact('productFilters', 'getCategories', 'familyColors', 'brands'));
     }
     // Add New Product Form View end
 
@@ -70,6 +74,7 @@ class ProductController extends Controller
             //validation
             $rule = [
                 'category_id' => 'required',
+                'brand_id' => 'required',
                 'product_name' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
                 'product_code' => 'required|regex:/^[\w-]*$/|max:30',
                 'product_color' => 'required|regex:/^[\pL\s\-]+$/u|max:200',
@@ -80,6 +85,7 @@ class ProductController extends Controller
 
             $customMessage = [
                 'category_id.required' => 'Category Id is required',
+                'brand_id.required' => 'Brand Name is required',
                 'product_name.required' => 'Product Name is required',
                 'product_name.regex' => 'Valid Product Name is required',
                 'product_name.max' => 'Product Name should be less than 200 characters',
@@ -239,8 +245,10 @@ class ProductController extends Controller
         $productFilters = Product::productFilters();
         //get family colr
         $familyColors = Color::all()->where('status', 1);
+        $brands = Brand::where('status', 1)->get()->toArray();
+        // dd($brands);
         if (!empty($product)) {
-            return view('admin.products.product_update')->with(compact('product', 'getCategories', 'productFilters', 'familyColors'));
+            return view('admin.products.product_update')->with(compact('product', 'getCategories', 'productFilters', 'familyColors','brands'));
         }
     }
     //Product Edit Form View End

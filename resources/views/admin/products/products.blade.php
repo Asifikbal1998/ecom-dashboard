@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Seeting</h1>
+                        <h1 class="m-0">Product</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">New Product</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active">All Product</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -23,7 +23,7 @@
         <!-- Main content -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Add New Product</h3>
+                <h3 class="card-title">All Product</h3>
                 @if ($productModule['edit_access'] == 1 || $productModule['full_access'] == 1)
                     <a href=" {{ route('product.create') }} " class="btn btn-primary" style="float: right;">Add New
                         Product</a>
